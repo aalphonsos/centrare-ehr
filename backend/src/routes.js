@@ -1,13 +1,10 @@
 const { Router } = require('express');
 
-// const DevController = require('./controllers/DevController');
-// const SearchController = require('./controllers/SearchController');
+const UserController = require('./controllers/UserController');
 
 const routes = Router();
 
-// routes.get('/devs', DevController.index);
-// routes.post('/devs', DevController.store);
-
-// routes.get('/search', SearchController.index);
+routes.post('/user', UserController.create);
+routes.get('/login', UserController.login);
 
 module.exports = routes;
