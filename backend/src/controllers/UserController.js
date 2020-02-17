@@ -1,6 +1,8 @@
 const UserModel = require('../models/User');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const saltRounds = 10;
+const secrets = require('../../../backend/secrets.json');
 
 module.exports = {
     async create(request, response){
@@ -46,7 +48,14 @@ module.exports = {
                     return response.status(500);
                 } else {
                     if(result) {
-                        return response.status(200).json({token: "jwt-token"})
+                        jwt.sign(user.toJSON(),secrets.jwtRS256_private_key, {algorithm: 'RS256'}, (err, token) => {
+                            if(err){
+                                console.log(err)
+                                return response.status(500);
+                            } else {
+                                return response.status(200).json({token})
+                            }
+                        })
                     } else {
                         return response.status(403).send('Wrong username or password');
                     }
